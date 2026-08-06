@@ -1,0 +1,1 @@
+Resolved. Cause: user account was outside the assigned AVD application group. Action: added account to the correct application group, retested access, confirmed login. Preventive: to review application group assignment checks. User confirmed working.

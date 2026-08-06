@@ -1,0 +1,15 @@
+﻿[2026-08-05 12:09:30] [INFO] === Cleanup started | RunId: 20260805_120930 | DryRun: True | OlderThanDays: 0 ===
+[2026-08-05 12:09:30] [INFO] Scanning directory: C:\Users\labuser\AppData\Local\Temp
+[2026-08-05 12:09:30] [WARN] LOCKED (skipping): C:\Users\labuser\AppData\Local\Temp\2\326a8557-b14b-4004-8af7-b7705e71c826.tmp
+[2026-08-05 12:09:30] [INFO] Scanning directory: C:\Windows\Temp
+[2026-08-05 12:09:30] [INFO] === Cleanup Summary ===
+[2026-08-05 12:09:30] [INFO] Run ID          : 20260805_120930
+[2026-08-05 12:09:30] [INFO] Mode            : DRY-RUN (no changes made)
+[2026-08-05 12:09:30] [INFO] Older than days : 0
+[2026-08-05 12:09:30] [INFO] Files scanned   : 1
+[2026-08-05 12:09:30] [INFO] Would remove    : 0
+[2026-08-05 12:09:30] [INFO] Skipped (age)   : 0
+[2026-08-05 12:09:30] [INFO] Skipped (locked): 1
+[2026-08-05 12:09:30] [INFO] Errors          : 0
+[2026-08-05 12:09:30] [INFO] Log file        : C:\Users\labuser\Documents\training\day3\Logs\cleanup-20260805_120930.log
+[2026-08-05 12:09:30] [INFO] =======================
