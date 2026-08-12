@@ -1,10 +1,10 @@
 Title: Runbook - Finance Team Cannot Access Shared Drives (FAULT-B)
-Version: 1.0
-Date: 07/08/2026
+Version: 1.1
+Date: 10/08/2026
 Author: Sathishbabu
 Reviewed: self
 Status: draft
-Change: initial version from RCA
+Change: command-first revision aligned to RCA timeline and recovery pattern
 
 # Runbook - Finance Team Cannot Access Shared Drives (FAULT-B)
 
@@ -46,28 +46,34 @@ Expected result: Log lines show script start, SYSTEM context, UNC failure, and e
 8. Confirm timeline pattern in logs: script attempts mapping before Workstation service is fully ready.
 Expected result: Evidence shows timing race (script failure before service readiness) and no retry.
 
-9. In Intune admin center, locate the drive mapping script deployment for Finance devices. [ELEVATED]
-Expected result: You can view execution context and assignment for the mapping script.
+9. In Intune admin center, open Devices -> Scripts and remediations -> Platform scripts -> Map-FinBridgeDrives.ps1 -> Properties. [ELEVATED]
+Expected result: Script assignment and run context are visible.
 
-10. Validate current configuration runs script in SYSTEM context.
-Expected result: SYSTEM context configuration is confirmed as current state.
+10. Validate current configuration runs in SYSTEM context and has no retry readiness gate.
+Expected result: RCA-matching risky configuration is confirmed.
 
-11. Apply immediate containment by restoring mapping execution to USER context (preferred: re-enable prior GPO logon script behavior for Finance OU). [ELEVATED]
+11. On affected endpoint, run command `Get-Content "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\IntuneManagementExtension.log" | Select-String "Map-FinBridgeDrives|SYSTEM|exit code 1|network name cannot be found"`.
+Expected result: Log evidence confirms SYSTEM context + UNC failure + exit code 1 pattern.
+
+12. On affected endpoint, run command `Get-WinEvent -FilterHashtable @{LogName='System'; Id=7036,98; StartTime=(Get-Date).AddHours(-4)} | Select-Object TimeCreated, Id, ProviderName, Message`.
+Expected result: Event 7036 (Workstation running) appears after the mapping attempt and Event 98 confirms S: assignment failure.
+
+13. Apply immediate containment by restoring mapping execution to USER context (preferred: re-enable prior GPO logon script behavior for Finance OU). [ELEVATED]
 Expected result: USER-context mapping path is active for Finance sign-ins.
 
-12. If GPO rollback is not immediately possible, update Intune script logic with readiness checks and retry/backoff (for example, wait for Workstation running and test UNC reachability before mapping). [ELEVATED]
+14. If GPO rollback is not immediately possible, update Intune script logic with readiness checks and retry/backoff (for example, wait for Workstation running and test UNC reachability before mapping). [ELEVATED]
 Expected result: Script has gating and retry behavior to prevent early startup failure.
 
-13. Force policy/script refresh on one pilot affected endpoint.
+15. Force policy/script refresh on one pilot affected endpoint using `Invoke-Command`/Intune sync or run command `dsregcmd /refreshprt` followed by Company Portal sync.
 Expected result: Updated mapping mechanism is applied to pilot endpoint.
 
-14. Sign out and sign back in on pilot endpoint with affected test user.
+16. Sign out and sign back in on pilot endpoint with affected test user.
 Expected result: Drive S: maps successfully during user sign-in.
 
-15. Expand remediation to remaining affected Finance endpoints.
+17. Expand remediation to remaining affected Finance endpoints.
 Expected result: Updated mapping behavior rolls out to incident scope.
 
-16. Capture before/after evidence in ticket (missing S: before, mapped S: after, and key log lines).
+18. Capture before/after evidence in ticket (missing S: before, mapped S: after, and key log lines).
 Expected result: Ticket contains auditable remediation evidence.
 
 ## 3) Verification
@@ -89,7 +95,10 @@ Expected result: No new exit code 1 for drive-mapping workflow in current observ
 6. Review System log for fresh Event ID 98 (Ntfs) entries related to S: mapping.
 Expected result: No new mapping-failure events after remediation.
 
-7. Update incident ticket with verification timestamp, sample endpoints, and outcomes.
+7. Run PowerShell command `Get-Content "C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\IntuneManagementExtension.log" -Tail 200 | Select-String "Map-FinBridgeDrives|exit code|network name"`.
+Expected result: No new exit code 1 or network-name failure entries in recent execution.
+
+8. Update incident ticket with verification timestamp, sample endpoints, and outcomes.
 Expected result: Closure evidence is complete and supports service restoration.
 
 ## 4) Rollback
@@ -109,6 +118,9 @@ Expected result: User impact remains contained while engineering validates a cor
 
 5. Record rollback action, timestamp, and validation result in incident ticket.
 Expected result: Change history is complete and auditable.
+
+6. Confirm rollback success with command `Get-PSDrive -Name S` on at least two pilot endpoints after sign-in.
+Expected result: S: drive is present via legacy USER-context mapping path.
 
 ## 5) Notes
 - RCA indicates dual failure mode: execution context regression (USER to SYSTEM) and startup timing race condition.

@@ -6,6 +6,8 @@ Status: Draft
 
 Use this guide when you need to add a Windows app to Intune before any phased rollout begins. The worked example throughout is FinBridge Connect v3.1.
 
+Important: if your source package is a .intunewin file, the correct Intune catalog choice is Windows app (Win32). Do not choose Line-of-business app for a .intunewin package.
+
 1. Open the app area in the Intune admin center.
    - Sign in to the Microsoft Intune admin center.
    - Go to Apps > All apps > Add.
@@ -13,9 +15,10 @@ Use this guide when you need to add a Windows app to Intune before any phased ro
 
 2. Choose the correct app type.
    - For a Windows package in .intunewin format, select Windows app (Win32). This is the correct choice for FinBridge Connect v3.1.
+   - In some internal notes this may be described loosely as a Windows LOB application, but in the Intune wizard the actual selectable app type for .intunewin is still Windows app (Win32).
    - For an app from Microsoft Store, select Microsoft Store app. Some tenants may show a new Store flow or a legacy Store flow, so verify the label in your tenant.
    - For a simple link to a website or portal, select Web link.
-   - Do not use a web link or Store app type for a .intunewin package.
+   - Do not use Line-of-business app, Web link, or Microsoft Store app for a .intunewin package.
 
 3. Upload the FinBridge Connect package.
    - Select the FinBridge Connect v3.1 .intunewin file.
@@ -111,7 +114,8 @@ Version = 3.1
 ## Quick reference for FinBridge Connect v3.1
 
 1. App type: Windows app (Win32) for the .intunewin package.
-2. Install command: FinBridgeConnect_Setup.exe /silent.
-3. Uninstall command: FinBridgeConnect_Setup.exe /uninstall /silent.
-4. Detection: registry key HKLM\SOFTWARE\FinBridge\Connect with Version = 3.1.
-5. Pilot first: assign Required or Available to a small test group before any broad rollout.
+2. Do not choose: Line-of-business app for this package type.
+3. Install command: FinBridgeConnect_Setup.exe /silent.
+4. Uninstall command: FinBridgeConnect_Setup.exe /uninstall /silent.
+5. Detection: registry key HKLM\SOFTWARE\FinBridge\Connect with Version = 3.1.
+6. Pilot first: assign Required or Available to a small test group before any broad rollout.
