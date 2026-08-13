@@ -7,8 +7,10 @@
 			"command": "powershell",
 			"args": [
 				"-NoProfile",
-				"-Command",
-				"$ErrorActionPreference='Stop'; az account set --subscription b2f12c89-b8dc-496c-bd77-6c41d7fc0340; Write-Host 'ACCOUNT'; az account show --query \"{user:user.name,sub:id,tenant:tenantId}\" -o json; Write-Host 'HOSTPOOL'; az desktopvirtualization hostpool show -g dwpai-lab-rg -n POOL-FIN-01 --query \"{name:name,type:hostPoolType,lb:loadBalancerType,max:maxSessionLimit,validation:validationEnvironment}\" -o json; Write-Host 'APPGROUP'; az desktopvirtualization applicationgroup show -g dwpai-lab-rg -n POOL-FIN-01-DAG --query \"{name:name,type:applicationGroupType,hostPoolArmPath:hostPoolArmPath}\" -o json; Write-Host 'WORKSPACE'; az desktopvirtualization workspace show -g dwpai-lab-rg -n FinBridge-Workspace --query \"{name:name,location:location}\" -o json; Write-Host 'WORKSPACE APPGROUP LINK'; az desktopvirtualization workspace show -g dwpai-lab-rg -n FinBridge-Workspace --query \"applicationGroupReferences\" -o json; Write-Host 'SESSIONHOSTS'; az desktopvirtualization session-host list -g dwpai-lab-rg --host-pool-name POOL-FIN-01 --query \"[].{name:name,status:status,allowNew:allowNewSession,sessions:sessions,updateState:updateState,lastHeartbeat:lastHeartBeat}\" -o table; Write-Host 'VM'; az vm list -g dwpai-lab-rg --query \"[?contains(name,'pool-fin-01') || contains(name,'avd') || contains(name,'session')].{name:name,power:powerState,location:location,security:securityProfile.securityType}\" -o table; Write-Host 'ROLE ASSIGNMENTS USER'; $uid=(az ad user show --id p45@zippyops.in --query id -o tsv); az role assignment list --all --assignee-object-id $uid --query \"[?contains(scope,'dwpai-lab-rg') || contains(scope,'b2f12c89-b8dc-496c-bd77-6c41d7fc0340')].{role:roleDefinitionName,scope:scope}\" -o table"
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"day9/verify-avd-status.ps1"
 			]
 		},
 		{
