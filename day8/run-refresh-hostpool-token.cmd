@@ -1,0 +1,2 @@
+@echo off
+"C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin\az.cmd" desktopvirtualization hostpool update -g dwpai-lab-rg -n POOL-FIN-01 --registration-info expiration-time=2026-08-14T12:30:00Z registration-token-operation=Update --query registrationInfo.token -o tsv

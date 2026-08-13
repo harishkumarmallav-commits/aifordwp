@@ -1,0 +1,1325 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "verify-avd-status",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$ErrorActionPreference='Stop'; az account set --subscription b2f12c89-b8dc-496c-bd77-6c41d7fc0340; Write-Host 'ACCOUNT'; az account show --query \"{user:user.name,sub:id,tenant:tenantId}\" -o json; Write-Host 'HOSTPOOL'; az desktopvirtualization hostpool show -g dwpai-lab-rg -n POOL-FIN-01 --query \"{name:name,type:hostPoolType,lb:loadBalancerType,max:maxSessionLimit,validation:validationEnvironment}\" -o json; Write-Host 'APPGROUP'; az desktopvirtualization applicationgroup show -g dwpai-lab-rg -n POOL-FIN-01-DAG --query \"{name:name,type:applicationGroupType,hostPoolArmPath:hostPoolArmPath}\" -o json; Write-Host 'WORKSPACE'; az desktopvirtualization workspace show -g dwpai-lab-rg -n FinBridge-Workspace --query \"{name:name,location:location}\" -o json; Write-Host 'WORKSPACE APPGROUP LINK'; az desktopvirtualization workspace show -g dwpai-lab-rg -n FinBridge-Workspace --query \"applicationGroupReferences\" -o json; Write-Host 'SESSIONHOSTS'; az desktopvirtualization session-host list -g dwpai-lab-rg --host-pool-name POOL-FIN-01 --query \"[].{name:name,status:status,allowNew:allowNewSession,sessions:sessions,updateState:updateState,lastHeartbeat:lastHeartBeat}\" -o table; Write-Host 'VM'; az vm list -g dwpai-lab-rg --query \"[?contains(name,'pool-fin-01') || contains(name,'avd') || contains(name,'session')].{name:name,power:powerState,location:location,security:securityProfile.securityType}\" -o table; Write-Host 'ROLE ASSIGNMENTS USER'; $uid=(az ad user show --id p45@zippyops.in --query id -o tsv); az role assignment list --all --assignee-object-id $uid --query \"[?contains(scope,'dwpai-lab-rg') || contains(scope,'b2f12c89-b8dc-496c-bd77-6c41d7fc0340')].{role:roleDefinitionName,scope:scope}\" -o table"
+			]
+		},
+		{
+			"label": "az-account-check",
+			"type": "shell",
+			"command": "az",
+			"args": [
+				"account",
+				"show",
+				"--subscription",
+				"b2f12c89-b8dc-496c-bd77-6c41d7fc0340",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "az-hostpool-check",
+			"type": "shell",
+			"command": "az",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "az-workspace-check",
+			"type": "shell",
+			"command": "az",
+			"args": [
+				"desktopvirtualization",
+				"workspace",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"FinBridge-Workspace",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "find-az-where",
+			"type": "shell",
+			"command": "where.exe",
+			"args": [
+				"az"
+			]
+		},
+		{
+			"label": "find-az-default",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$p='C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd'; if(Test-Path $p){Write-Output $p}else{Write-Output 'NOT_FOUND'}"
+			]
+		},
+		{
+			"label": "az-version-path1",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"version"
+			]
+		},
+		{
+			"label": "az-version-path2",
+			"type": "shell",
+			"command": "C:\\Program Files (x86)\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"version"
+			]
+		},
+		{
+			"label": "az-version-path3",
+			"type": "shell",
+			"command": "C:\\Program Files\\AzureCLI\\wbin\\az.cmd",
+			"args": [
+				"version"
+			]
+		},
+		{
+			"label": "avd-account-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"account",
+				"show",
+				"--subscription",
+				"b2f12c89-b8dc-496c-bd77-6c41d7fc0340",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "avd-hostpool-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "avd-workspace-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"workspace",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"FinBridge-Workspace",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "avd-appgroup-list",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"applicationgroup",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "avd-sessionhosts-list",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"session-host",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--host-pool-name",
+				"POOL-FIN-01",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-my-rbac",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"role",
+				"assignment",
+				"list",
+				"--assignee",
+				"traininguser65@zippyops.in",
+				"--scope",
+				"/subscriptions/b2f12c89-b8dc-496c-bd77-6c41d7fc0340",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "dv-command-help",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"-h"
+			]
+		},
+		{
+			"label": "list-win11-avd-images",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"image",
+				"list",
+				"--location",
+				"eastus",
+				"--publisher",
+				"microsoftwindowsdesktop",
+				"--offer",
+				"windows-11",
+				"--all",
+				"--query",
+				"[?contains(sku,'avd')].[sku,version]",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "check-rg",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"group",
+				"show",
+				"-n",
+				"dwpai-lab-rg",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "check-sku-22h2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"image",
+				"show",
+				"--location",
+				"eastus",
+				"--publisher",
+				"microsoftwindowsdesktop",
+				"--offer",
+				"windows-11",
+				"--sku",
+				"win11-22h2-avd",
+				"--version",
+				"latest",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-sku-23h2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"image",
+				"show",
+				"--location",
+				"eastus",
+				"--publisher",
+				"microsoftwindowsdesktop",
+				"--offer",
+				"windows-11",
+				"--sku",
+				"win11-23h2-avd",
+				"--version",
+				"latest",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-sku-24h2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"image",
+				"show",
+				"--location",
+				"eastus",
+				"--publisher",
+				"microsoftwindowsdesktop",
+				"--offer",
+				"windows-11",
+				"--sku",
+				"win11-24h2-avd",
+				"--version",
+				"latest",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "list-sku-23h2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"image",
+				"list",
+				"--location",
+				"eastus",
+				"--publisher",
+				"microsoftwindowsdesktop",
+				"--offer",
+				"windows-11",
+				"--sku",
+				"win11-23h2-avd",
+				"--all",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "list-sku-24h2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"image",
+				"list",
+				"--location",
+				"eastus",
+				"--publisher",
+				"microsoftwindowsdesktop",
+				"--offer",
+				"windows-11",
+				"--sku",
+				"win11-24h2-avd",
+				"--all",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "hostpool-create-help",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"create",
+				"-h"
+			]
+		},
+		{
+			"label": "appgroup-create-help",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"applicationgroup",
+				"create",
+				"-h"
+			]
+		},
+		{
+			"label": "workspace-create-help",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"workspace",
+				"create",
+				"-h"
+			]
+		},
+		{
+			"label": "create-hostpool",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"create",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"-l",
+				"eastus",
+				"--friendly-name",
+				"POOL-FIN-01",
+				"--host-pool-type",
+				"Pooled",
+				"--load-balancer-type",
+				"BreadthFirst",
+				"--max-session-limit",
+				"5",
+				"--preferred-app-group-type",
+				"Desktop",
+				"--custom-rdp-property",
+				"targetisaadjoined:i:1;enablerdsaadauth:i:1",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "create-dag",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"applicationgroup",
+				"create",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01-DAG",
+				"-l",
+				"eastus",
+				"--friendly-name",
+				"POOL-FIN-01-DAG",
+				"--application-group-type",
+				"Desktop",
+				"--host-pool-arm-path",
+				"/subscriptions/b2f12c89-b8dc-496c-bd77-6c41d7fc0340/resourceGroups/dwpai-lab-rg/providers/Microsoft.DesktopVirtualization/hostPools/POOL-FIN-01",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "create-workspace",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"workspace",
+				"create",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"FinBridge-Workspace",
+				"-l",
+				"eastus",
+				"--friendly-name",
+				"FinBridge-Workspace",
+				"--application-group-references",
+				"/subscriptions/b2f12c89-b8dc-496c-bd77-6c41d7fc0340/resourceGroups/dwpai-lab-rg/providers/Microsoft.DesktopVirtualization/applicationGroups/POOL-FIN-01-DAG",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "create-sessionhost-vm",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"create",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"sh-pool-fin-01-01",
+				"-l",
+				"eastus",
+				"--image",
+				"MicrosoftWindowsDesktop:windows-11:win11-24h2-avd:26100.9168.260809",
+				"--size",
+				"Standard_B2ms",
+				"--admin-username",
+				"avdlocaladmin",
+				"--admin-password",
+				"C0mpl3x!Passw0rd!2026",
+				"--public-ip-sku",
+				"Standard",
+				"--security-type",
+				"TrustedLaunch",
+				"--enable-secure-boot",
+				"true",
+				"--enable-vtpm",
+				"true",
+				"--assign-identity",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "create-sessionhost-vm-2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"create",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"-l",
+				"eastus",
+				"--image",
+				"MicrosoftWindowsDesktop:windows-11:win11-24h2-avd:26100.9168.260809",
+				"--size",
+				"Standard_B2ms",
+				"--admin-username",
+				"avdlocaladmin",
+				"--admin-password",
+				"C0mpl3x!Passw0rd!2026",
+				"--public-ip-sku",
+				"Standard",
+				"--security-type",
+				"TrustedLaunch",
+				"--enable-secure-boot",
+				"true",
+				"--enable-vtpm",
+				"true",
+				"--assign-identity",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "vm-show-shfin0101",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"-d",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "vm-list-rg",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"-d",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "hostpool-update-help",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"update",
+				"-h"
+			]
+		},
+		{
+			"label": "wait-vm-created",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"wait",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--created"
+			]
+		},
+		{
+			"label": "install-aadlogin-extension",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"extension",
+				"set",
+				"-g",
+				"dwpai-lab-rg",
+				"--vm-name",
+				"shfin0101",
+				"--publisher",
+				"Microsoft.Azure.ActiveDirectory",
+				"--name",
+				"AADLoginForWindows",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "hostpool-generate-token",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"update",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"--registration-info",
+				"expiration-time=2026-08-14T10:45:00Z",
+				"registration-token-operation=Update",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "register-vm-to-avd",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"$token='eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzQjM1MkE1MzExQkM4REJDNTIzRjdERUNGRkU1RTJDNUQxMkIxQTciLCJ0eXAiOiJKV1QifQ.eyJSZWdpc3RyYXRpb25JZCI6IjgyYTM0YmUwLWVhOTUtNDFlYS05OGMwLWQ1MDhlOWU3ZDM4MSIsIkJyb2tlclVyaSI6Imh0dHBzOi8vcmRicm9rZXItZy11cy1yMS53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1VyaSI6Imh0dHBzOi8vcmRkaWFnbm9zdGljcy1nLXVzLXIxLnd2ZC5taWNyb3NvZnQuY29tLyIsIkVuZHBvaW50UG9vbElkIjoiZWJmZGZlZDAtMzVkZS00ZWE5LTg4OTQtNmE1YjJlNjEwNDZlIiwiR2xvYmFsQnJva2VyVXJpIjoiaHR0cHM6Ly9yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJHZW9ncmFwaHkiOiJVUyIsIkdsb2JhbEJyb2tlclJlc291cmNlSWRVcmkiOiJodHRwczovL2ViZmRmZWQwLTM1ZGUtNGVhOS04ODk0LTZhNWIyZTYxMDQ2ZS5yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJCcm9rZXJSZXNvdXJjZUlkVXJpIjoiaHR0cHM6Ly9lYmZkZmVkMC0zNWRlLTRlYTktODg5NC02YTViMmU2MTA0NmUucmRicm9rZXItZy11cy1yMS53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1Jlc291cmNlSWRVcmkiOiJodHRwczovL2ViZmRmZWQwLTM1ZGUtNGVhOS04ODk0LTZhNWIyZTYxMDQ2ZS5yZGRpYWdub3N0aWNzLWctdXMtcjEud3ZkLm1pY3Jvc29mdC5jb20vIiwiQUFEVGVuYW50SWQiOiJmYTg0NDNjNi01YTM5LTRkZjUtYTAxOC05Yzg3NjQ1NWFkZjkiLCJuYmYiOjE3ODY2MTgwNzYsImV4cCI6MTc4NjcwNDMwMCwiaXNzIjoiUkRJbmZyYVRva2VuTWFuYWdlciIsImF1ZCI6IlJEbWkifQ.bZUU5tgpJrOpaOE3ryeY5WctS1wH51H4X8fsAZp4siCY3WPLjvz6E7Lr08K6tMrvCA7giqLvM22tAun_3UcqSU7KPD8DXgLU6kg0oIE12TF7oRlwY-LkELaAeqbrcTlxhnVKrUI-clHr78we3xyvOuXSwA59itKAUnX7PHqvWIDy2djCt9Kv4B4yWK40QAPFxIOss1YT6MuzAXlTnopdaOyFhYOJBqsKbZKVXXdsePDfZAjy90vTCTno7cGKA2qhtzrZyvZoTi6PU8Pv_kCkUpHZmvbbYb5Z4wpEq_02NBY8vCnGCjclKTK1UMxNwHfBvonUQmROJJeVHCux6jcq7w'",
+				"$agent='$env:TEMP\\AVD-Agent.msi'",
+				"$boot='$env:TEMP\\AVD-Bootloader.msi'",
+				"Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv' -OutFile $agent",
+				"Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH' -OutFile $boot",
+				"Start-Process msiexec.exe -ArgumentList \"/i `\"$boot`\" /qn /quiet /norestart\" -Wait",
+				"Start-Process msiexec.exe -ArgumentList \"/i `\"$agent`\" REGISTRATIONTOKEN=$token /qn /quiet /norestart\" -Wait",
+				"Get-Service RDAgentBootLoader,RDAgent | Select-Object Name,Status,StartType | Format-Table -AutoSize"
+			]
+		},
+		{
+			"label": "get-hostpool-token",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"--query",
+				"registrationInfo.token",
+				"-o",
+				"tsv"
+			]
+		},
+		{
+			"label": "refresh-token",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"update",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"--registration-info",
+				"expiration-time=2026-08-14T11:15:00Z",
+				"registration-token-operation=Update",
+				"--query",
+				"registrationInfo.token",
+				"-o",
+				"tsv"
+			]
+		},
+		{
+			"label": "run-avd-registration-script",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"@day8/register-avd-sessionhost.ps1",
+				"--parameters",
+				"registrationToken=eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzQjM1MkE1MzExQkM4REJDNTIzRjdERUNGRkU1RTJDNUQxMkIxQTciLCJ0eXAiOiJKV1QifQ.eyJSZWdpc3RyYXRpb25JZCI6IjJhYTNiZjY2LTcxYzItNDEzNy04NTA5LTNjYzFhYzBlMjUzNSIsIkJyb2tlclVyaSI6Imh0dHBzOi8vcmRicm9rZXItZy11cy1yMS53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1VyaSI6Imh0dHBzOi8vcmRkaWFnbm9zdGljcy1nLXVzLXIxLnd2ZC5taWNyb3NvZnQuY29tLyIsIkVuZHBvaW50UG9vbElkIjoiZWJmZGZlZDAtMzVkZS00ZWE5LTg4OTQtNmE1YjJlNjEwNDZlIiwiR2xvYmFsQnJva2VyVXJpIjoiaHR0cHM6Ly9yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJHZW9ncmFwaHkiOiJVUyIsIkdsb2JhbEJyb2tlclJlc291cmNlSWRVcmkiOiJodHRwczovL2ViZmRmZWQwLTM1ZGUtNGVhOS04ODk0LTZhNWIyZTYxMDQ2ZS5yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJCcm9rZXJSZXNvdXJjZUlkVXJpIjoiaHR0cHM6Ly9lYmZkZmVkMC0zNWRlLTRlYTktODg5NC02YTViMmU2MTA0NmUucmRicm9rZXItZy11cy1yMS53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1Jlc291cmNlSWRVcmkiOiJodHRwczovL2ViZmRmZWQwLTM1ZGUtNGVhOS04ODk0LTZhNWIyZTYxMDQ2ZS5yZGRpYWdub3N0aWNzLWctdXMtcjEud3ZkLm1pY3Jvc29mdC5jb20vIiwiQUFEVGVuYW50SWQiOiJmYTg0NDNjNi01YTM5LTRkZjUtYTAxOC05Yzg3NjQ1NWFkZjkiLCJuYmYiOjE3ODY2MTgxODgsImV4cCI6MTc4NjcwNjEwMCwiaXNzIjoiUkRJbmZyYVRva2VuTWFuYWdlciIsImF1ZCI6IlJEbWkifQ.TfNHJXFwUOrswpfKsYVgvSzfoN0FNA4ap_kVc3FFaICJHGY9kYyPd6yjgcPDEwtCmF0K7O4I6Y-3zX2Qjm6nw9Ws03G6uVk4e4Vi9pXP5oOxPEcA1zeYl2zTle8AKeCBspEYcgjoofa0eKgY3_AYGokt5NhujTlpeVyMv9Jfu9VjhjIjVC-6XTO7YVzkyWB98tWR1J2lQ5nH_Ik8OaO62r1awT61jXawiUIpmhZ6eTlr-rLJVYP96ygGoJg19fVrgJb2EapJu_TGcgfXcDonmCV9QR7-2jGMY1fPVouRa_o9B5xNSUVvYeTH97j6L-wPcSUiZ6hIjdLXBfhLCK6aoA",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "list-sessionhost-resources",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--resource-type",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "hostpool-show-raw",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "vm-ext-list",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"extension",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--vm-name",
+				"shfin0101",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "aad-extension-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"extension",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"--vm-name",
+				"shfin0101",
+				"--name",
+				"AADLoginForWindows",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "vm-check-avd-services",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"Get-Service -Name RdAgent,RDAgentBootLoader -ErrorAction SilentlyContinue | Select Name,Status,StartType | Format-Table -AutoSize",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "wait-runcommand-finish",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"wait",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--name",
+				"RunPowerShellScript",
+				"--updated"
+			]
+		},
+		{
+			"label": "vm-run-command-wait-help",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"wait",
+				"-h"
+			]
+		},
+		{
+			"label": "vm-check-avd-services-2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"Get-Service -Name RdAgent,RDAgentBootLoader -ErrorAction SilentlyContinue | Select Name,Status,StartType | Format-Table -AutoSize",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "vm-ext-list-json",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"extension",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--vm-name",
+				"shfin0101",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "poll-sessionhost-resources",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--resource-type",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "poll-aad-extension",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"extension",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"--vm-name",
+				"shfin0101",
+				"--name",
+				"AADLoginForWindows",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "list-dv-resources",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--namespace",
+				"Microsoft.DesktopVirtualization",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "vm-diagnose-avd-agent",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"$services = Get-Service -Name RdAgent,RDAgentBootLoader -ErrorAction SilentlyContinue; if($services){$services | Select Name,Status,StartType | Format-Table -AutoSize | Out-String}else{'RDAgent services not found'}; Get-ChildItem 'C:\\ProgramData\\Microsoft\\RDInfra' -Recurse -ErrorAction SilentlyContinue | Select-Object -First 20 FullName | Format-Table -AutoSize",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "run-avd-diagnostics",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"@day8/diagnose-avd-sessionhost.ps1",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "run-avd-product-diagnostics",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"@day8/diagnose-avd-products.ps1",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "rerun-agent-registration-only",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"@day8/register-avd-sessionhost-direct.ps1",
+				"--parameters",
+				"registrationToken=eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzQjM1MkE1MzExQkM4REJDNTIzRjdERUNGRkU1RTJDNUQxMkIxQTciLCJ0eXAiOiJKV1QifQ.eyJSZWdpc3RyYXRpb25JZCI6IjJhYTNiZjY2LTcxYzItNDEzNy04NTA5LTNjYzFhYzBlMjUzNSIsIkJyb2tlclVyaSI6Imh0dHBzOi8vcmRicm9rZXItZy11cy1yMS53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1VyaSI6Imh0dHBzOi8vcmRkaWFnbm9zdGljcy1nLXVzLXIxLnd2ZC5taWNyb3NvZnQuY29tLyIsIkVuZHBvaW50UG9vbElkIjoiZWJmZGZlZDAtMzVkZS00ZWE5LTg4OTQtNmE1YjJlNjEwNDZlIiwiR2xvYmFsQnJva2VyVXJpIjoiaHR0cHM6Ly9yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJHZW9ncmFwaHkiOiJVUyIsIkdsb2JhbEJyb2tlclJlc291cmNlSWRVcmkiOiJodHRwczovL2ViZmRmZWQwLTM1ZGUtNGVhOS04ODk0LTZhNWIyZTYxMDQ2ZS5yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJCcm9rZXJSZXNvdXJjZUlkVXJpIjoiaHR0cHM6Ly9lYmZkZmVkMC0zNWRlLTRlYTktODg5NC02YTViMmU2MTA0NmUucmRicm9rZXItZy11cy1yMS53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1Jlc291cmNlSWRVcmkiOiJodHRwczovL2ViZmRmZWQwLTM1ZGUtNGVhOS04ODk0LTZhNWIyZTYxMDQ2ZS5yZGRpYWdub3N0aWNzLWctdXMtcjEud3ZkLm1pY3Jvc29mdC5jb20vIiwiQUFEVGVuYW50SWQiOiJmYTg0NDNjNi01YTM5LTRkZjUtYTAxOC05Yzg3NjQ1NWFkZjkiLCJuYmYiOjE3ODY2MTgxODgsImV4cCI6MTc4NjcwNjEwMCwiaXNzIjoiUkRJbmZyYVRva2VuTWFuYWdlciIsImF1ZCI6IlJEbWkifQ.TfNHJXFwUOrswpfKsYVgvSzfoN0FNA4ap_kVc3FFaICJHGY9kYyPd6yjgcPDEwtCmF0K7O4I6Y-3zX2Qjm6nw9Ws03G6uVk4e4Vi9pXP5oOxPEcA1zeYl2zTle8AKeCBspEYcgjoofa0eKgY3_AYGokt5NhujTlpeVyMv9Jfu9VjhjIjVC-6XTO7YVzkyWB98tWR1J2lQ5nH_Ik8OaO62r1awT61jXawiUIpmhZ6eTlr-rLJVYP96ygGoJg19fVrgJb2EapJu_TGcgfXcDonmCV9QR7-2jGMY1fPVouRa_o9B5xNSUVvYeTH97j6L-wPcSUiZ6hIjdLXBfhLCK6aoA",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "poll-sessionhost-resources-2",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--resource-type",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "hostpool-show-essentials",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"--query",
+				"{name:name,lb:loadBalancerType,max:maxSessionLimit,type:hostPoolType,customRdp:customRdpProperty}",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "workspace-show-essentials",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"workspace",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"FinBridge-Workspace",
+				"--query",
+				"{name:name,refs:applicationGroupReferences}",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "assign-dv-user-role",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"role",
+				"assignment",
+				"create",
+				"--assignee",
+				"p45@zippyops.in",
+				"--role",
+				"Desktop Virtualization User",
+				"--scope",
+				"/subscriptions/b2f12c89-b8dc-496c-bd77-6c41d7fc0340/resourceGroups/dwpai-lab-rg/providers/Microsoft.DesktopVirtualization/applicationGroups/POOL-FIN-01-DAG",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "assign-vm-login-role",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"role",
+				"assignment",
+				"create",
+				"--assignee",
+				"p45@zippyops.in",
+				"--role",
+				"Virtual Machine User Login",
+				"--scope",
+				"/subscriptions/b2f12c89-b8dc-496c-bd77-6c41d7fc0340/resourceGroups/dwpai-lab-rg/providers/Microsoft.Compute/virtualMachines/shfin0101",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "final-hostpool-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"hostpool",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "final-workspace-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"workspace",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"FinBridge-Workspace",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "final-appgroup-show",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"desktopvirtualization",
+				"applicationgroup",
+				"show",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"POOL-FIN-01-DAG",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "final-sessionhost-list",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--resource-type",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "final-role-check",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"role",
+				"assignment",
+				"list",
+				"--assignee",
+				"p45@zippyops.in",
+				"--all",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-entra-join-state",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"dsregcmd /status",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-sessionhost-resource-again",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--query",
+				"[?type=='Microsoft.DesktopVirtualization/hostpools/sessionhosts']",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-agent-services-now",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"Get-Service RdAgent,RDAgentBootLoader | Select Name,Status,StartType | ConvertTo-Json",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "list-avd-event-channels",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"Get-WinEvent -ListLog * | Where-Object {$_.LogName -match 'RDAgent|RemoteDesktop|WVD|RDInfra'} | Select-Object -ExpandProperty LogName | Sort-Object | Out-String",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "avd-agent-event-errors",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"$logs=@('Microsoft-RDInfra-Agent/Operational','Microsoft-RDInfra-Agent/Trace'); foreach($l in $logs){ if((Get-WinEvent -ListLog $l -ErrorAction SilentlyContinue)){ Write-Output \"=== $l ===\"; Get-WinEvent -LogName $l -MaxEvents 30 | Select-Object TimeCreated,Id,LevelDisplayName,Message | Format-List } }",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "resource-list-sessionhosts-plain",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"resource",
+				"list",
+				"-g",
+				"dwpai-lab-rg",
+				"--resource-type",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts",
+				"-o",
+				"table"
+			]
+		},
+		{
+			"label": "run-avd-event-diagnostics",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"@day8/diagnose-avd-events.ps1",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "set-hostpool-rdp-props-full",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"& 'C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd' desktopvirtualization hostpool update -g dwpai-lab-rg -n POOL-FIN-01 --custom-rdp-property 'targetisaadjoined:i:1;enablerdsaadauth:i:1' -o json"
+			]
+		},
+		{
+			"label": "avd-agent-registry-check",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"Get-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\RDInfraAgent' -ErrorAction SilentlyContinue | Out-Null; if(Test-Path 'HKLM:\\SOFTWARE\\Microsoft\\RDInfraAgent'){ Get-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\RDInfraAgent' | Select-Object * | ConvertTo-Json -Depth 4 } else { 'RDInfraAgent key missing' }",
+				"-o",
+				"json"
+			]
+		},
+		{
+			"label": "check-rdinfra-reg",
+			"type": "shell",
+			"command": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin\\az.cmd",
+			"args": [
+				"vm",
+				"run-command",
+				"invoke",
+				"-g",
+				"dwpai-lab-rg",
+				"-n",
+				"shfin0101",
+				"--command-id",
+				"RunPowerShellScript",
+				"--scripts",
+				"@day8/check-rdinfra-reg.ps1",
+				"-o",
+				"json"
+			]
+		}
+	]
+}

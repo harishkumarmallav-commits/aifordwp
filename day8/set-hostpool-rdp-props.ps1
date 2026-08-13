@@ -1,0 +1,1 @@
+& 'C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin\az.cmd' desktopvirtualization hostpool update -g dwpai-lab-rg -n POOL-FIN-01 --custom-rdp-property 'targetisaadjoined:i:1;enablerdsaadauth:i:1' -o json
