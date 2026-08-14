@@ -7,7 +7,16 @@
 
 Source: Re-expressed from [Runbook-FLR6-PROF-003-Missing-Shortcuts.md](Runbook-FLR6-PROF-003-Missing-Shortcuts.md).
 
+Runbook traceability:
+- Runbook Section 3 Step 2 checks hidden vs deleted shortcut state.
+- Runbook Section 4 investigates app/policy/profile causes.
+- Runbook recovery procedures are summarized below for end users.
+
 If your desktop shortcuts disappeared, your files are still safe. Shortcuts are only links.
+
+Why this conclusion is valid:
+- Shortcut files (.lnk) are pointers, not the underlying documents.
+- Incident evidence indicates shortcut-state loss, not user-data deletion.
 
 Try this:
 1. Open Start, search the app name (for example Outlook).

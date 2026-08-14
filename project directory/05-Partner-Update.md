@@ -68,7 +68,7 @@ Separately, at least 12 Floor 6 employees reported they could not log into their
 
 **Critical Unknowns:**
 1. **Scope of Copilot exposure:** Did other employees access unauthorized client information? How many client matters are affected?
-2. **Root cause of Copilot access failure:** Was the document management system misconfigured, or does Copilot's architecture lack proper data filtering?
+2. **Root cause of Copilot access failure:** Did we configure permissions incorrectly in our document system, or is there a gap in how the integration checks permissions?
 3. **Whether rollback will fix both issues:** Will removing the app restore both login function AND Copilot access controls?
 4. **Whether data was exfiltrated:** Did the exposed information leave our system, or was it only viewed?
 5. **Which client matters are affected:** Identification needed immediately to assess regulatory notification obligations
@@ -110,9 +110,17 @@ These unknowns will be resolved through the security investigation (Incident 1) 
 
 ---
 
+## Why We Believe This (Reasoning in Plain Language)
+
+- We connect both incidents to Friday's update because the timing matches and the affected group matches the update target (Floor 6).
+- We classify the Copilot issue as security because real client data crossed an access boundary. That indicates a permissions-control failure, not a normal software glitch.
+- We selected rollback first because it is the fastest low-risk step to restore operations while legal/compliance investigation continues.
+
+---
+
 ## Language Note for Non-Technical Readers
 
-**This update is written for business and legal audiences without IT background.** We have avoided technical jargon. Here's a quick guide if you need to translate terms:
+**This update is written for business and legal audiences without IT background.** We have kept technical terms to a minimum. Here's a quick guide:
 
 - **\"Copilot\"** = Microsoft's AI assistant tool that searches documents (like Google for company files)
 - **\"Governance failure\"** = We didn't set up proper restrictions on who can see what

@@ -7,7 +7,17 @@
 
 Source: Re-expressed from [Runbook-FLR6-AUTH-002-Login-Failures.md](Runbook-FLR6-AUTH-002-Login-Failures.md).
 
+Runbook traceability:
+- Runbook Section 3 confirmed auth-platform health and startup-path interference.
+- Runbook Section 4 drove the rollback decision.
+- Runbook verification confirmed login timing returned to baseline.
+
 Login delays on Floor 6 were caused by a Friday software update. The app was removed, and login speed is restored.
+
+Why this conclusion is valid:
+- Symptom onset matched the deployment window.
+- Affected scope matched the Floor 6 assignment target.
+- Rollback removed the delay pattern and restored normal sign-in.
 
 What to do now:
 1. Log in normally.

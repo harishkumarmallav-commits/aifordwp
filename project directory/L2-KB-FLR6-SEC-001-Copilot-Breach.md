@@ -10,6 +10,11 @@
 
 **SOURCE OF TRUTH:** This L2 article is a technical re-expression of [Runbook-FLR6-SEC-001-Copilot-Breach.md](Runbook-FLR6-SEC-001-Copilot-Breach.md) and follows the runbook's section flow. If conflicts appear, the runbook governs.
 
+**TRACEABILITY MAP:**
+- Runbook Section 3 (Immediate Containment) -> Phase 1: Immediate Containment
+- Runbook Section 4 (Investigation Handoff) -> Technical Investigation
+- Runbook Section 5 (Communication/Documentation) -> Escalation Path and timeline
+
 ---
 
 ## Executive Summary
@@ -20,7 +25,14 @@
 **Correlation:** Friday 15:00 document management app deployment  
 **Status:** Contained - Investigation ongoing
 
+**Classification Note:** This is a security signal (authorization boundary failure), not a Copilot product bug.
+
 **Root Cause Hypothesis:** Document management app deployed with overly permissive access controls in Copilot integration layer, allowing all Floor 6 users to query information outside their authorization scope.
+
+Reasoning for this classification:
+- Evidence indicates retrieval of real backend data, not fabricated output.
+- Scope and timing align with deployment target and change window.
+- Access-boundary failure requires security/compliance handling.
 
 ---
 

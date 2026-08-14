@@ -10,6 +10,11 @@
 
 **SOURCE OF TRUTH:** This L2 article is a technical re-expression of [Runbook-FLR6-AUTH-002-Login-Failures.md](Runbook-FLR6-AUTH-002-Login-Failures.md) and follows the runbook's section flow. If conflicts appear, the runbook governs.
 
+**TRACEABILITY MAP:**
+- Runbook Section 3 (Immediate Diagnostics) -> Technical Investigation Findings
+- Runbook Section 4 (Remediation Decision Tree) -> Remediation Actions Taken
+- Runbook Section 5 (Verification/Monitoring) -> Prevention & Monitoring
+
 ---
 
 ## Executive Summary
@@ -44,6 +49,11 @@
 **Confirmed Root Cause:**
 
 Document Management Application was configured to run during Windows login startup sequence. The app's initialization process had a timeout or infinite loop issue that caused:
+
+Reasoning for this conclusion:
+- Identity infrastructure checks did not show a broad auth outage.
+- Symptom scope and timing matched the deployment target and window.
+- Rollback removed the startup delay behavior and restored expected login performance.
 
 ```
 Windows Logon Sequence:

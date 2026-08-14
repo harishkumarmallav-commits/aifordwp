@@ -10,6 +10,11 @@
 
 **SOURCE OF TRUTH:** This L2 article is a technical re-expression of [Runbook-FLR6-PROF-003-Missing-Shortcuts.md](Runbook-FLR6-PROF-003-Missing-Shortcuts.md) and follows the runbook's section flow. If conflicts appear, the runbook governs.
 
+**TRACEABILITY MAP:**
+- Runbook Section 3 (Initial Investigation) -> Technical Investigation Steps
+- Runbook Section 4 (Root Cause Investigation) -> Root Cause Confirmation Matrix
+- Runbook recovery procedures -> Recovery Options
+
 ---
 
 ## Executive Summary
@@ -19,6 +24,11 @@
 **Impact:** Single user confirmed; scope assessment ongoing  
 **Root Cause Hypothesis:** App deployment script or Group Policy change modified user profile desktop customizations  
 **Status:** User self-service recovery in progress; IT profile restoration available if needed
+
+Reasoning for this conclusion:
+- Symptom timing aligns with the deployment change window.
+- Evidence pattern is specific to shortcut visibility/deletion states.
+- Recovery tests (unhide/restore/recreate) match profile customization impact.
 
 ---
 

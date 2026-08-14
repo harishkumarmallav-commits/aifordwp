@@ -7,7 +7,17 @@
 
 Source: Re-expressed from [Runbook-FLR6-SEC-001-Copilot-Breach.md](Runbook-FLR6-SEC-001-Copilot-Breach.md).
 
+Runbook traceability:
+- Runbook Section 3 covers immediate containment and access restriction.
+- Runbook Section 4 covers evidence capture and security handoff.
+- Runbook Section 5 governs approved user communication.
+
 An employee saw client information in Copilot that they should not have seen. This is a security signal and access-control issue, not a Copilot product bug.
+
+Why this is a security incident:
+- Real client data appeared outside authorized access boundaries.
+- That indicates a permissions-control failure in configuration or integration.
+- Authorization-boundary failures are security incidents, not routine product bugs.
 
 What IT has done:
 - Contained access.

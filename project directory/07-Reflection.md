@@ -17,6 +17,13 @@ When the incident was reported Monday 09:14, three parallel problem streams arri
 **My Initial Hypothesis (Intuitive Assumption):**
 "These are three separate incidents that happen to have occurred on the same floor and timeframe by coincidence. The Copilot issue is a security/permissions problem. The login failures are an authentication infrastructure issue. The missing shortcuts are a user profile corruption issue. Each should be investigated independently and likely has different root causes."
 
+### Required Reflection: Where My First Instinct Was Wrong
+My first instinct was to suspect an authentication infrastructure fault for the login failures (AD/Entra service health problem). The evidence did not support that: service health checks did not indicate a broad outage, while incident timing and affected scope mapped tightly to the Friday Floor 6 deployment.
+
+What changed my mind was the convergence of evidence across timeline, geography, and deployment scope. I then treated the incidents as a likely single deployment-linked failure.
+
+This correction pattern is mirrored in Section 3a script review: the AI-generated script initially looked acceptable, but evidence quality improved only after hand correction (time-bounded `Get-WinEvent` queries instead of generic newest-event pulls). The same lesson applied in both cases: plausible first pass is not enough; decision-grade evidence must drive the conclusion.
+
 **Supporting Reasoning:**
 - Copilot is a Microsoft service; login failures are authentication infrastructure; shortcuts are user profile system—three distinct technical domains
 - Different severity levels suggest different root causes
