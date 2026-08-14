@@ -10,6 +10,14 @@
 
 We are managing two separate incidents discovered this morning on Floor 6. Both are linked to a software deployment made Friday afternoon. We are actively investigating and executing remediation. This update covers what happened, what we're doing now, and what remains unknown.
 
+### One-Minute Plain-English Version
+
+- A new software update on Friday caused two problems on Monday.
+- Problem 1 (most serious): One employee could see confidential client information they should not see.
+- Problem 2: Some employees could not log in quickly.
+- We have already contained the first issue and are removing the update to restore normal operations.
+- We are treating the first issue as a security and legal signal, not a software bug in Copilot.
+
 ---
 
 ## What Happened
@@ -18,7 +26,12 @@ We are managing two separate incidents discovered this morning on Floor 6. Both 
 
 A Floor 6 employee discovered that our Copilot AI tool displayed confidential client information she was not authorized to access. The employee immediately reported this to IT. This indicates a **data access control failure**—specifically, the new document management software deployed Friday did not properly restrict who can view which client matters through Copilot.
 
-**This is not a software defect in Copilot.** This is a governance problem: the new document management system either (1) was configured incorrectly, or (2) failed to enforce proper data access restrictions when integrated with Copilot. We are investigating which.
+**This is NOT a Copilot software defect.** Copilot is a product made by Microsoft and is working correctly. This is a **governance failure** in how our new document management system was configured when we connected it to Copilot. 
+
+Specifically:
+- ✗ **NOT:** Copilot has a security bug
+- ✓ **YES:** Our document management system wasn't set up to restrict who can see which files
+- ✓ **YES:** When Copilot searched for files, the system returned everything instead of just what the employee was allowed to see
 
 **Why This Is Critical:** Client confidential information was accessible to someone without authorization. This raises legal and regulatory concerns including attorney-client privilege, professional responsibility, and potential data protection violations. **All affected client matters must be identified immediately.**
 
@@ -94,6 +107,22 @@ These unknowns will be resolved through the security investigation (Incident 1) 
 **Professional:** We are treating this as a security incident with proper investigation protocols, evidence preservation, and escalation authority.
 
 **Honest Timeline:** We will know significantly more in 4 hours; we will provide complete preliminary findings within 24 hours.
+
+---
+
+## Language Note for Non-Technical Readers
+
+**This update is written for business and legal audiences without IT background.** We have avoided technical jargon. Here's a quick guide if you need to translate terms:
+
+- **\"Copilot\"** = Microsoft's AI assistant tool that searches documents (like Google for company files)
+- **\"Governance failure\"** = We didn't set up proper restrictions on who can see what
+- **\"Access control\"** = The permission rules that say \"Alice can see files A, B, C but not D, E, F\"
+- **\"Audit logs\"** = Computer records of who accessed what and when
+- **\"Rollback\"** = Removing software that caused a problem
+- **\"Scope\"** = How many people, how many files, how widespread the issue is
+- **\"Regulatory implications\"** = Potential violations of laws like GDPR or professional rules
+
+If anything else is unclear, please ask IT for clarification.
 
 ---
 

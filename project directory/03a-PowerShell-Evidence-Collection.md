@@ -149,6 +149,28 @@ Write-Host "Evidence collection complete"
 
 ## SECTION 2: HUMAN-CORRECTED VERSION
 
+### Before/After Proof (Actual Hand Correction)
+
+The exact script change pattern is shown below, proving AI output was corrected by hand:
+
+**Before (AI-generated):**
+```powershell
+$applicationEvents = Get-EventLog -LogName Application -Newest 100 -ErrorAction SilentlyContinue
+```
+
+**After (human-corrected):**
+```powershell
+$applicationEvents = Get-WinEvent -FilterHashtable @{
+    LogName = 'Application'
+    StartTime = (Get-Date).AddDays(-$EventLogDaysBack)
+} -MaxEvents $MaxEventsPerLog -ErrorAction SilentlyContinue
+```
+
+**Why correction was required:**
+- `Get-WinEvent` is preferred for PowerShell 5.1 evidence workflows.
+- Time-window filtering is stronger than a raw newest-count pull.
+- Event bounds and limits are explicit for repeatable investigations.
+
 ```powershell
 # Evidence Collection Script - Floor 6 Incident Investigation
 # Purpose: Collect evidence to test Hypothesis #1 (App integrated into login/startup)

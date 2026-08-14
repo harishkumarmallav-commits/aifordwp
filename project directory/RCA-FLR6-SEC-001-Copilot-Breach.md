@@ -192,11 +192,42 @@ Expected Configuration:
 
 ### Primary Root Cause
 
-**The document management application was deployed with its API service account configured with administrative ("full access") permissions, combined with the absence of user-level permission filtering in the Copilot integration layer. This allowed Copilot queries to return all documents in the system regardless of the authenticated user's authorization level.**
+**SECURITY SIGNAL - NOT A PRODUCT DEFECT:**
 
-### Root Cause Reasoning
+**The document management application was deployed with its API service account configured with administrative (\"full access\") permissions, combined with the absence of user-level permission filtering in the Copilot integration layer. This allowed Copilot queries to return all documents in the system regardless of the authenticated user's authorization level.**
 
-1. **Service Account Configuration Error:** The API service account was not restricted to minimal necessary permissions (principle of least privilege violation). Instead, it was given full administrative access—likely the system default used during development and not restricted before production deployment.
+**This is a PERMISSIONS GOVERNANCE FAILURE, not a Copilot bug.** Copilot is functioning exactly as designed: it queries the API and returns the results provided. The upstream system (document management API) returned unfiltered results because it was not restricted to the user's permissions.
+
+### Root Cause Reasoning (The \"Why\" Behind the Incident)
+
+**The reasoning chain that led to this conclusion:**
+
+1. **Evidence Point 1 → Observation:** Service account has admin permissions
+   - **Evidence:** Configuration audit shows service account assigned \"Full Access\" role
+   - **Why this matters:** Full Access means the account can read EVERY document regardless of who owns it
+   - **Reasoning:** If a service account has full access, queries through that account will return all documents
+
+2. **Evidence Point 2 → Observation:** Copilot uses service account for API queries
+   - **Evidence:** Copilot query logs show requests originating from service account, not user
+   - **Why this matters:** If Copilot uses a full-access account, Copilot gets all documents
+   - **Reasoning:** Copilot cannot filter what it doesn't know about; it gets what the service account provides
+
+3. **Evidence Point 3 → Observation:** No permission filtering in integration layer
+   - **Evidence:** Code review shows integration doesn't check user's role before returning results
+   - **Why this matters:** Even if service account had full access, integration could filter results by user role
+   - **Reasoning:** This filtering layer is missing, so all documents flow through to Copilot
+
+4. **Integration of Evidence → Conclusion:** 
+   - Service account = Full access to all documents
+   - Copilot = Uses service account for queries
+   - Integration = No filtering layer
+   - **Result:** Copilot returns all documents to all users
+
+**Therefore, the root cause is a PERMISSIONS GOVERNANCE failure, not a Copilot defect.**
+
+---
+
+**Service Account Configuration Error (The First Component):** The API service account was not restricted to minimal necessary permissions (principle of least privilege violation). Instead, it was given full administrative access—likely the system default used during development and not restricted before production deployment.
 
 2. **Missing User-Level Filtering:** The integration between Copilot and the document management app did not implement user authorization checks. The integration should filter query results based on the authenticated user's permissions; this filtering logic was either missing, disabled, or bypassed.
 

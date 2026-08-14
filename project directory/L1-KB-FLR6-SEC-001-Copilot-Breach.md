@@ -8,6 +8,10 @@
 
 ---
 
+**⚠️ SOURCE & AUDIENCE:** This article is extracted from the Unauthorized Copilot Access Incident Runbook ([Runbook-FLR6-SEC-001-Copilot-Breach.md](Runbook-FLR6-SEC-001-Copilot-Breach.md)), simplified for end users, and kept in the same section order as the runbook. If you're on the IT support team needing procedures, refer to the runbook instead.
+
+---
+
 ## In Plain Language
 
 **What happened:** A Floor 6 employee discovered that Copilot (our AI assistant) was showing them information they shouldn't see.
@@ -57,9 +61,15 @@ A software update on Friday deployed a new document management app to Floor 6 de
 - A hacking or security breach from outside
 - Intentional by employees
 - A virus or malware
+- A Copilot product bug
 - A system-wide vulnerability
 
-**It was:** A configuration mistake in the software deployment.
+**It WAS:** A security governance and configuration failure in our deployment.
+
+Reasoning in plain language:
+- Copilot only shows what the connected system returns.
+- Our connected document system returned data too broadly.
+- Therefore the failure is in permissions setup, not in Copilot itself.
 
 ---
 

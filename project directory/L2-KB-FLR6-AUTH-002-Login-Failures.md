@@ -8,6 +8,10 @@
 
 ---
 
+**SOURCE OF TRUTH:** This L2 article is a technical re-expression of [Runbook-FLR6-AUTH-002-Login-Failures.md](Runbook-FLR6-AUTH-002-Login-Failures.md) and follows the runbook's section flow. If conflicts appear, the runbook governs.
+
+---
+
 ## Executive Summary
 
 **Incident:** Login failures and extreme slowness (60+ seconds) affecting 12+ Floor 6 users  

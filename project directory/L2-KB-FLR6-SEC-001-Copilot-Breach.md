@@ -8,6 +8,10 @@
 
 ---
 
+**SOURCE OF TRUTH:** This L2 article is a technical re-expression of [Runbook-FLR6-SEC-001-Copilot-Breach.md](Runbook-FLR6-SEC-001-Copilot-Breach.md) and follows the runbook's section flow. If conflicts appear, the runbook governs.
+
+---
+
 ## Executive Summary
 
 **Incident:** Unauthorized data access via Copilot on Floor 6  

@@ -8,6 +8,10 @@
 
 ---
 
+**⚠️ SOURCE & AUDIENCE:** This article is extracted from the Floor 6 Login Failures Emergency Response Runbook ([Runbook-FLR6-AUTH-002-Login-Failures.md](Runbook-FLR6-AUTH-002-Login-Failures.md)), simplified for end users, and kept in the same section order as the runbook. If you're on the IT support team needing procedures, refer to the runbook instead.
+
+---
+
 ## The Issue is FIXED
 
 **Problem:** Floor 6 computers were slow to log in on Monday morning (taking 60+ seconds instead of 30 seconds).

@@ -8,6 +8,10 @@
 
 ---
 
+**⚠️ SOURCE & AUDIENCE:** This article is extracted from the Desktop Shortcuts Loss Runbook ([Runbook-FLR6-PROF-003-Missing-Shortcuts.md](Runbook-FLR6-PROF-003-Missing-Shortcuts.md)), simplified for end users, and kept in the same section order as the runbook. If you are in IT support and need the full procedure, use the runbook.
+
+---
+
 ## Problem: Desktop Shortcuts Are Gone
 
 **Symptom:** Your desktop doesn't show the usual icons/shortcuts for Outlook, Word, Excel, etc.

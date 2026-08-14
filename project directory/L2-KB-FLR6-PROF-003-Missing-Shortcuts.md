@@ -8,6 +8,10 @@
 
 ---
 
+**SOURCE OF TRUTH:** This L2 article is a technical re-expression of [Runbook-FLR6-PROF-003-Missing-Shortcuts.md](Runbook-FLR6-PROF-003-Missing-Shortcuts.md) and follows the runbook's section flow. If conflicts appear, the runbook governs.
+
+---
+
 ## Executive Summary
 
 **Incident:** Floor 6 user's desktop shortcuts disappeared following Friday document management app deployment  
